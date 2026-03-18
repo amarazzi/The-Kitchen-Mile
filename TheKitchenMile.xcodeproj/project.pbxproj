@@ -23,6 +23,13 @@
 		A0000000000000000000001C /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001B /* Theme.swift */; };
 		A0000000000000000000001E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001D /* Assets.xcassets */; };
 		A00000000000000000000020 /* meals.json in Resources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001F /* meals.json */; };
+		B00000000000000000000001 /* Barlow-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000011 /* Barlow-Regular.ttf */; };
+		B00000000000000000000002 /* Barlow-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000012 /* Barlow-SemiBold.ttf */; };
+		B00000000000000000000003 /* Barlow-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000013 /* Barlow-Bold.ttf */; };
+		B00000000000000000000004 /* Barlow-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000014 /* Barlow-ExtraBold.ttf */; };
+		B00000000000000000000005 /* BarlowCondensed-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000015 /* BarlowCondensed-Medium.ttf */; };
+		B00000000000000000000006 /* BarlowCondensed-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000016 /* BarlowCondensed-SemiBold.ttf */; };
+		B00000000000000000000007 /* BarlowCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000017 /* BarlowCondensed-Bold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +51,13 @@
 		A0000000000000000000001F /* meals.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = meals.json; sourceTree = "<group>"; };
 		A00000000000000000000021 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0000000000000000000002C /* The Kitchen Mile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Kitchen Mile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B00000000000000000000011 /* Barlow-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Regular.ttf"; sourceTree = "<group>"; };
+		B00000000000000000000012 /* Barlow-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-SemiBold.ttf"; sourceTree = "<group>"; };
+		B00000000000000000000013 /* Barlow-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Bold.ttf"; sourceTree = "<group>"; };
+		B00000000000000000000014 /* Barlow-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-ExtraBold.ttf"; sourceTree = "<group>"; };
+		B00000000000000000000015 /* BarlowCondensed-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BarlowCondensed-Medium.ttf"; sourceTree = "<group>"; };
+		B00000000000000000000016 /* BarlowCondensed-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BarlowCondensed-SemiBold.ttf"; sourceTree = "<group>"; };
+		B00000000000000000000017 /* BarlowCondensed-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BarlowCondensed-Bold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,8 +147,23 @@
 			isa = PBXGroup;
 			children = (
 				A0000000000000000000001F /* meals.json */,
+				B00000000000000000000020 /* Fonts */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		B00000000000000000000020 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				B00000000000000000000011 /* Barlow-Regular.ttf */,
+				B00000000000000000000012 /* Barlow-SemiBold.ttf */,
+				B00000000000000000000013 /* Barlow-Bold.ttf */,
+				B00000000000000000000014 /* Barlow-ExtraBold.ttf */,
+				B00000000000000000000015 /* BarlowCondensed-Medium.ttf */,
+				B00000000000000000000016 /* BarlowCondensed-SemiBold.ttf */,
+				B00000000000000000000017 /* BarlowCondensed-Bold.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -197,6 +226,13 @@
 			files = (
 				A0000000000000000000001E /* Assets.xcassets in Resources */,
 				A00000000000000000000020 /* meals.json in Resources */,
+				B00000000000000000000001 /* Barlow-Regular.ttf in Resources */,
+				B00000000000000000000002 /* Barlow-SemiBold.ttf in Resources */,
+				B00000000000000000000003 /* Barlow-Bold.ttf in Resources */,
+				B00000000000000000000004 /* Barlow-ExtraBold.ttf in Resources */,
+				B00000000000000000000005 /* BarlowCondensed-Medium.ttf in Resources */,
+				B00000000000000000000006 /* BarlowCondensed-SemiBold.ttf in Resources */,
+				B00000000000000000000007 /* BarlowCondensed-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

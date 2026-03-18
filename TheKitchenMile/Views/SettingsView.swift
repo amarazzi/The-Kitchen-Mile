@@ -7,101 +7,129 @@ struct SettingsView: View {
     @State private var weightText: String = ""
     @State private var showError: Bool = false
 
-    var colors: ThemeColors { appState.themeColors }
-
     var body: some View {
         ZStack {
-            colors.background.ignoresSafeArea()
+            Theme.bg.ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: Theme.spacing24) {
+                // Header
                 HStack {
-                    Text(L10n.settingsTitle(appState.language))
-                        .font(.headingMedium)
-                        .foregroundColor(colors.primaryText)
+                    VStack(alignment: .leading, spacing: Theme.spacing4) {
+                        Text(L10n.settingsEyebrow(appState.language).uppercased())
+                            .font(.eyebrow)
+                            .foregroundColor(Theme.accent)
+                            .tracking(0.06 * 11)
+
+                        Text(L10n.settingsTitle(appState.language).uppercased())
+                            .font(.displayMedium)
+                            .foregroundColor(Theme.text)
+                            .tracking(0.02 * 36)
+                    }
 
                     Spacer()
 
                     Button(action: { dismiss() }) {
                         Image(systemName: "xmark")
-                            .font(.bodyMedium)
-                            .foregroundColor(colors.secondaryText)
+                            .font(.system(size: 14))
+                            .foregroundColor(Theme.text3)
                     }
                     .buttonStyle(.plain)
                 }
 
-                // Weight
-                VStack(alignment: .leading, spacing: Theme.spacing8) {
-                    Text(L10n.weightLabel(appState.language))
-                        .font(.bodyMedium)
-                        .foregroundColor(colors.secondaryText)
+                // Divider
+                Rectangle()
+                    .fill(Theme.border)
+                    .frame(height: 1)
 
-                    HStack(spacing: Theme.spacing8) {
+                // Weight group
+                VStack(alignment: .leading, spacing: Theme.spacing8) {
+                    Text(L10n.weightLabel(appState.language).uppercased())
+                        .font(.eyebrowMicro)
+                        .foregroundColor(Theme.text3)
+                        .tracking(0.12 * 9)
+
+                    HStack(alignment: .firstTextBaseline, spacing: Theme.spacing8) {
                         TextField(
                             L10n.weightPlaceholder(appState.language),
                             text: $weightText
                         )
                         .textFieldStyle(.plain)
-                        .font(.headingSmall)
-                        .foregroundColor(colors.primaryText)
-                        .frame(width: 80)
-                        .padding(.horizontal, Theme.spacing16)
-                        .padding(.vertical, Theme.spacing8)
-                        .background(colors.surface)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: Theme.cornerRadius)
-                                .stroke(showError ? Theme.errorColor : colors.border, lineWidth: 1)
-                        )
-                        .cornerRadius(Theme.cornerRadius)
+                        .font(.numberLarge)
+                        .foregroundColor(Theme.accent)
+                        .frame(width: 120)
                         .onChange(of: weightText) { _ in
                             validateAndApplyWeight()
                         }
 
                         Text(L10n.weightUnit(appState.language))
                             .font(.bodyMedium)
-                            .foregroundColor(colors.secondaryText)
+                            .foregroundColor(Theme.text2)
                     }
+                    .padding(.horizontal, Theme.spacing24)
+                    .padding(.vertical, Theme.spacing16)
+                    .background(Theme.surface)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: Theme.cornerRadius)
+                            .stroke(showError ? Theme.errorColor : Theme.border, lineWidth: 1)
+                    )
+                    .cornerRadius(Theme.cornerRadius)
 
                     if showError {
                         Text(L10n.weightError(appState.language))
-                            .font(.caption)
+                            .font(.ingredientText)
                             .foregroundColor(Theme.errorColor)
                     }
                 }
 
-                // Language
-                VStack(alignment: .leading, spacing: Theme.spacing8) {
-                    Text(L10n.languageLabel(appState.language))
-                        .font(.bodyMedium)
-                        .foregroundColor(colors.secondaryText)
+                // Divider
+                Rectangle()
+                    .fill(Theme.border)
+                    .frame(height: 1)
 
-                    Picker("", selection: $appState.language) {
-                        ForEach(AppLanguage.allCases, id: \.self) { lang in
-                            Text(lang.displayName).tag(lang)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .frame(maxWidth: 240)
+                // Language group
+                VStack(alignment: .leading, spacing: Theme.spacing8) {
+                    Text(L10n.languageLabel(appState.language).uppercased())
+                        .font(.eyebrowMicro)
+                        .foregroundColor(Theme.text3)
+                        .tracking(0.12 * 9)
+
+                    SegmentedControl(
+                        options: AppLanguage.allCases,
+                        selection: $appState.language,
+                        label: { $0.displayName }
+                    )
+                    .frame(maxWidth: 280)
                 }
 
-                // Appearance
-                VStack(alignment: .leading, spacing: Theme.spacing8) {
-                    Text(L10n.appearanceLabel(appState.language))
-                        .font(.bodyMedium)
-                        .foregroundColor(colors.secondaryText)
+                // Divider
+                Rectangle()
+                    .fill(Theme.border)
+                    .frame(height: 1)
 
-                    Picker("", selection: $appState.appearance) {
-                        Text(L10n.darkLabel(appState.language)).tag(AppearanceMode.dark)
-                        Text(L10n.lightLabel(appState.language)).tag(AppearanceMode.light)
-                    }
-                    .pickerStyle(.segmented)
-                    .frame(maxWidth: 240)
+                // Appearance group
+                VStack(alignment: .leading, spacing: Theme.spacing8) {
+                    Text(L10n.appearanceLabel(appState.language).uppercased())
+                        .font(.eyebrowMicro)
+                        .foregroundColor(Theme.text3)
+                        .tracking(0.12 * 9)
+
+                    SegmentedControl(
+                        options: AppearanceMode.allCases,
+                        selection: $appState.appearance,
+                        label: {
+                            $0 == .dark
+                                ? L10n.darkLabel(appState.language)
+                                : L10n.lightLabel(appState.language)
+                        }
+                    )
+                    .frame(maxWidth: 280)
                 }
 
                 Spacer()
             }
             .padding(Theme.spacing24)
         }
-        .frame(width: 380, height: 340)
+        .frame(width: 400, height: 480)
         .onAppear {
             weightText = "\(Int(appState.userWeight))"
         }

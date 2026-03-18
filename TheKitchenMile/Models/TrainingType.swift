@@ -8,16 +8,6 @@ enum TrainingType: String, Codable, CaseIterable {
     case longRun
     case rest
 
-    var color: Color {
-        switch self {
-        case .easy: return Theme.easyRunColor
-        case .quality: return Theme.qualityColor
-        case .longRun: return Theme.longRunColor
-        case .rest: return Theme.restDayColor
-        }
-    }
-
-    // Macros per kg of body weight
     var carbsPerKg: Double {
         switch self {
         case .easy: return 3.6
@@ -57,16 +47,16 @@ enum TrainingType: String, Codable, CaseIterable {
         switch lang {
         case .en:
             switch self {
-            case .easy: return "Easy run"
-            case .quality: return "Quality session"
-            case .longRun: return "Long run"
-            case .rest: return "Rest day"
+            case .easy: return "Easy Run"
+            case .quality: return "Quality Session"
+            case .longRun: return "Long Run"
+            case .rest: return "Rest Day"
             }
         case .es:
             switch self {
-            case .easy: return "Trote suave"
+            case .easy: return "Trote Suave"
             case .quality: return "Calidad"
-            case .longRun: return "Fondo largo"
+            case .longRun: return "Fondo Largo"
             case .rest: return "Descanso"
             }
         }
@@ -76,9 +66,9 @@ enum TrainingType: String, Codable, CaseIterable {
         switch lang {
         case .en:
             switch self {
-            case .easy: return "Easy run"
+            case .easy: return "Easy Run"
             case .quality: return "Quality"
-            case .longRun: return "Long run"
+            case .longRun: return "Long Run"
             case .rest: return "Rest"
             }
         case .es:
@@ -87,6 +77,44 @@ enum TrainingType: String, Codable, CaseIterable {
             case .quality: return "Calidad"
             case .longRun: return "Fondo"
             case .rest: return "Descanso"
+            }
+        }
+    }
+
+    func eyebrowLabel(lang: AppLanguage) -> String {
+        switch lang {
+        case .en:
+            switch self {
+            case .easy: return "Workout"
+            case .quality: return "Workout"
+            case .longRun: return "Endurance"
+            case .rest: return "Recovery"
+            }
+        case .es:
+            switch self {
+            case .easy: return "Entrenamiento"
+            case .quality: return "Entrenamiento"
+            case .longRun: return "Resistencia"
+            case .rest: return "Recuperación"
+            }
+        }
+    }
+
+    func subtitle(lang: AppLanguage) -> String {
+        switch lang {
+        case .en:
+            switch self {
+            case .easy: return "Low intensity, steady pace"
+            case .quality: return "Intervals, tempo, speed"
+            case .longRun: return "High mileage endurance"
+            case .rest: return "Recovery and restoration"
+            }
+        case .es:
+            switch self {
+            case .easy: return "Baja intensidad, ritmo estable"
+            case .quality: return "Intervalos, tempo, velocidad"
+            case .longRun: return "Kilometraje largo, fondo"
+            case .rest: return "Recuperación y descanso"
             }
         }
     }

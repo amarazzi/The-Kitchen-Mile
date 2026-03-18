@@ -24,6 +24,7 @@ enum UDKeys {
     static let userWeight = "userWeight"
     static let language = "language"
     static let appearance = "appearance"
+    static let lastUsedTrainingType = "lastUsedTrainingType"
 }
 
 // MARK: - App State
@@ -45,9 +46,16 @@ final class AppState: ObservableObject {
         didSet { UserDefaults.standard.set(appearance.rawValue, forKey: UDKeys.appearance) }
     }
 
+    @Published var lastUsedTrainingType: TrainingType? {
+        didSet {
+            if let t = lastUsedTrainingType {
+                UserDefaults.standard.set(t.rawValue, forKey: UDKeys.lastUsedTrainingType)
+            }
+        }
+    }
+
     @Published var selectedTrainingType: TrainingType?
 
-    // Current meal plan: [MealSlot: (quick: Meal, cooked: Meal)]
     @Published var currentMealPlan: [MealSlot: MealPair] = [:]
 
     init() {
@@ -69,10 +77,11 @@ final class AppState: ObservableObject {
         } else {
             self.appearance = .dark
         }
-    }
 
-    var themeColors: ThemeColors {
-        Theme.colors(for: appearance)
+        if let lastRaw = UserDefaults.standard.string(forKey: UDKeys.lastUsedTrainingType),
+           let last = TrainingType(rawValue: lastRaw) {
+            self.lastUsedTrainingType = last
+        }
     }
 
     func dailyTargets() -> MacroTargets? {

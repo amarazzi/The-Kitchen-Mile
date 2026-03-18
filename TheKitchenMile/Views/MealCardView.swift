@@ -5,20 +5,20 @@ struct MealCardView: View {
     let mode: MealMode
     let weight: Double
     let lang: AppLanguage
-    let colors: ThemeColors
 
     var body: some View {
         VStack(alignment: .leading, spacing: Theme.spacing8) {
-            // Mode label
-            Text(mode == .quick ? L10n.quick(lang) : L10n.cooked(lang))
-                .font(.captionMedium)
-                .foregroundColor(colors.secondaryText)
-                .textCase(.uppercase)
+            // Eyebrow badge
+            Text((mode == .quick ? L10n.quick(lang) : L10n.cooked(lang)).uppercased())
+                .font(.eyebrowMicro)
+                .foregroundColor(Theme.text3)
+                .tracking(0.14 * 9)
 
             // Meal name
-            Text(meal.name)
-                .font(.headingSmall)
-                .foregroundColor(colors.primaryText)
+            Text(meal.name.uppercased())
+                .font(.headingLarge)
+                .foregroundColor(Theme.text)
+                .tracking(0.02 * 20)
                 .fixedSize(horizontal: false, vertical: true)
 
             // Ingredients
@@ -26,46 +26,34 @@ struct MealCardView: View {
                 ForEach(meal.scaledIngredients(for: weight)) { ingredient in
                     HStack(spacing: Theme.spacing4) {
                         Text("·")
-                            .foregroundColor(colors.secondaryText)
+                            .foregroundColor(Theme.text3)
                         Text("\(ingredient.displayAmount()) \(ingredient.item)")
-                            .font(.bodyRegular)
-                            .foregroundColor(colors.secondaryText)
+                            .font(.ingredientText)
+                            .foregroundColor(Theme.text2)
                     }
                 }
             }
 
-            // Prep note
-            Text(meal.prepNote)
-                .font(.caption)
-                .foregroundColor(colors.tertiaryText)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, Theme.spacing4)
-
             Spacer(minLength: 0)
 
-            // Kcal
-            Text("~\(meal.scaledKcal(for: weight)) kcal")
-                .font(.bodyMedium)
-                .foregroundColor(colors.primaryText)
-                .padding(.top, Theme.spacing4)
+            // Kcal — large lime number
+            HStack(alignment: .firstTextBaseline, spacing: Theme.spacing4) {
+                Text("~\(meal.scaledKcal(for: weight))")
+                    .font(.headingLarge)
+                    .foregroundColor(Theme.accent)
+                    .tracking(-0.3)
+                Text("kcal")
+                    .font(.ingredientText)
+                    .foregroundColor(Theme.text3)
+            }
+            .padding(.top, Theme.spacing4)
         }
         .padding(Theme.cardPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(colors.surface)
+        .background(Theme.surface)
         .overlay(
             RoundedRectangle(cornerRadius: Theme.cornerRadius)
-                .stroke(colors.border, lineWidth: Theme.cardBorderWidth)
-        )
-        .overlay(
-            mode == .quick ?
-                HStack {
-                    Rectangle()
-                        .fill(Theme.easyRunColor)
-                        .frame(width: Theme.quickCardBorderWidth)
-                    Spacer()
-                }
-                .clipShape(RoundedRectangle(cornerRadius: Theme.cornerRadius))
-            : nil
+                .stroke(Theme.border, lineWidth: Theme.cardBorderWidth)
         )
         .cornerRadius(Theme.cornerRadius)
     }

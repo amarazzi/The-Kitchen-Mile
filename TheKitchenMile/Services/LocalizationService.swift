@@ -4,17 +4,24 @@ import Foundation
 
 enum L10n {
     // MARK: - Onboarding
+    static func onboardingEyebrow(_ lang: AppLanguage) -> String {
+        switch lang {
+        case .en: return "Fuel your training"
+        case .es: return "Potenciá tu entrenamiento"
+        }
+    }
+
     static func onboardingTitle(_ lang: AppLanguage) -> String {
         switch lang {
-        case .en: return "Setup"
-        case .es: return "Configuración"
+        case .en: return "Let's get you set up."
+        case .es: return "Vamos a configurar todo."
         }
     }
 
     static func weightLabel(_ lang: AppLanguage) -> String {
         switch lang {
-        case .en: return "How much do you weigh?"
-        case .es: return "¿Cuánto pesás?"
+        case .en: return "Body Weight"
+        case .es: return "Peso corporal"
         }
     }
 
@@ -55,7 +62,35 @@ enum L10n {
         }
     }
 
+    static func lastUsedLabel(_ lang: AppLanguage) -> String {
+        switch lang {
+        case .en: return "Last used"
+        case .es: return "Último usado"
+        }
+    }
+
     // MARK: - Meal Plan
+    static func activeLabel(_ lang: AppLanguage) -> String {
+        switch lang {
+        case .en: return "Active"
+        case .es: return "Activo"
+        }
+    }
+
+    static func backLabel(_ lang: AppLanguage) -> String {
+        switch lang {
+        case .en: return "Back"
+        case .es: return "Volver"
+        }
+    }
+
+    static func shuffleLabel(_ lang: AppLanguage) -> String {
+        switch lang {
+        case .en: return "Shuffle"
+        case .es: return "Cambiar"
+        }
+    }
+
     static func breakfast(_ lang: AppLanguage) -> String {
         switch lang {
         case .en: return "Breakfast"
@@ -136,7 +171,21 @@ enum L10n {
         }
     }
 
+    static func totalKcalLabel(_ lang: AppLanguage) -> String {
+        switch lang {
+        case .en: return "total kcal"
+        case .es: return "kcal total"
+        }
+    }
+
     // MARK: - Settings
+    static func settingsEyebrow(_ lang: AppLanguage) -> String {
+        switch lang {
+        case .en: return "Preferences"
+        case .es: return "Preferencias"
+        }
+    }
+
     static func settingsTitle(_ lang: AppLanguage) -> String {
         switch lang {
         case .en: return "Settings"

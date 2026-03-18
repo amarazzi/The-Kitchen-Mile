@@ -4,34 +4,60 @@ struct TrainingTypeSelectionView: View {
     @EnvironmentObject var appState: AppState
     @ObservedObject var historyService: HistoryService
 
-    var colors: ThemeColors { appState.themeColors }
-
     var body: some View {
         ZStack {
-            colors.background.ignoresSafeArea()
+            Theme.bg.ignoresSafeArea()
 
             VStack(spacing: Theme.spacing32) {
                 Spacer()
 
-                Text(formattedDate())
-                    .font(.bodyMedium)
-                    .foregroundColor(colors.secondaryText)
+                VStack(spacing: Theme.spacing12) {
+                    // Date eyebrow
+                    Text(formattedDate().uppercased())
+                        .font(.eyebrow)
+                        .foregroundColor(Theme.text3)
+                        .tracking(0.06 * 11)
 
-                Text(L10n.trainingQuestion(appState.language))
-                    .font(.headingLarge)
-                    .foregroundColor(colors.primaryText)
+                    // Main question
+                    Text(L10n.trainingQuestion(appState.language).uppercased())
+                        .font(.displayMedium)
+                        .foregroundColor(Theme.text)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(-36 * 0.05)
+                        .tracking(0.02 * 36)
+                }
 
-                HStack(spacing: Theme.spacing16) {
-                    ForEach(TrainingType.allCases, id: \.self) { type in
-                        TrainingTypeButton(
-                            type: type,
+                // 2×2 grid
+                VStack(spacing: Theme.spacing16) {
+                    HStack(spacing: Theme.spacing16) {
+                        TrainingTypeCard(
+                            type: .easy,
                             lang: appState.language,
-                            colors: colors
-                        ) {
-                            selectTrainingType(type)
-                        }
+                            isFeatured: appState.lastUsedTrainingType == .easy
+                        ) { selectTrainingType(.easy) }
+
+                        TrainingTypeCard(
+                            type: .quality,
+                            lang: appState.language,
+                            isFeatured: appState.lastUsedTrainingType == .quality
+                        ) { selectTrainingType(.quality) }
+                    }
+
+                    HStack(spacing: Theme.spacing16) {
+                        TrainingTypeCard(
+                            type: .longRun,
+                            lang: appState.language,
+                            isFeatured: appState.lastUsedTrainingType == .longRun
+                        ) { selectTrainingType(.longRun) }
+
+                        TrainingTypeCard(
+                            type: .rest,
+                            lang: appState.language,
+                            isFeatured: appState.lastUsedTrainingType == .rest
+                        ) { selectTrainingType(.rest) }
                     }
                 }
+                .frame(maxWidth: 480)
 
                 Spacer()
             }
@@ -41,6 +67,7 @@ struct TrainingTypeSelectionView: View {
 
     private func selectTrainingType(_ type: TrainingType) {
         appState.selectedTrainingType = type
+        appState.lastUsedTrainingType = type
 
         let plan = MealService.shared.generateFullPlan(
             lang: appState.language.langCode,
@@ -50,7 +77,6 @@ struct TrainingTypeSelectionView: View {
 
         appState.currentMealPlan = plan
 
-        // Record all meals in history
         for (slot, pair) in plan {
             historyService.recordPair(pair, slot: slot)
         }
@@ -64,35 +90,67 @@ struct TrainingTypeSelectionView: View {
     }
 }
 
-// MARK: - Training Type Button
+// MARK: - Training Type Card
 
-struct TrainingTypeButton: View {
+struct TrainingTypeCard: View {
     let type: TrainingType
     let lang: AppLanguage
-    let colors: ThemeColors
+    let isFeatured: Bool
     let action: () -> Void
 
     @State private var isHovered = false
 
     var body: some View {
         Button(action: action) {
-            VStack(spacing: Theme.spacing8) {
-                Text(type.shortName(lang: lang))
-                    .font(.bodyMedium)
-                    .foregroundColor(isHovered ? colors.background : colors.primaryText)
+            ZStack(alignment: .topTrailing) {
+                VStack(alignment: .leading, spacing: Theme.spacing8) {
+                    // Eyebrow label
+                    if isFeatured {
+                        Text(L10n.lastUsedLabel(lang).uppercased())
+                            .font(.eyebrowSmall)
+                            .foregroundColor(Theme.accent)
+                            .tracking(0.12 * 10)
+                    } else {
+                        Text(type.eyebrowLabel(lang: lang).uppercased())
+                            .font(.eyebrowSmall)
+                            .foregroundColor(Theme.text3)
+                            .tracking(0.12 * 10)
+                    }
+
+                    // Name
+                    Text(type.displayName(lang: lang).uppercased())
+                        .font(.displaySmall)
+                        .foregroundColor(Theme.text)
+                        .tracking(0.02 * 22)
+
+                    // Subtitle
+                    Text(type.subtitle(lang: lang))
+                        .font(.bodySmall)
+                        .foregroundColor(Theme.text2)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                // Lime dot for featured
+                if isFeatured {
+                    Circle()
+                        .fill(Theme.accent)
+                        .frame(width: 8, height: 8)
+                }
             }
-            .padding(.horizontal, Theme.spacing24)
-            .padding(.vertical, Theme.spacing16)
-            .background(isHovered ? type.color : colors.surface)
+            .padding(Theme.cardPadding)
+            .background(isFeatured ? Theme.accentDim : Theme.surface)
             .overlay(
                 RoundedRectangle(cornerRadius: Theme.cornerRadius)
-                    .stroke(isHovered ? type.color : colors.border, lineWidth: 1)
+                    .stroke(
+                        isFeatured ? Theme.accentBorder : (isHovered ? Theme.text3 : Theme.border),
+                        lineWidth: 1
+                    )
             )
             .cornerRadius(Theme.cornerRadius)
         }
         .buttonStyle(.plain)
         .onHover { hovering in
-            withAnimation(.easeInOut(duration: 0.15)) {
+            withAnimation(.easeInOut(duration: 0.12)) {
                 isHovered = hovering
             }
         }

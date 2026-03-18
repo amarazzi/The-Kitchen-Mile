@@ -5,6 +5,10 @@ struct TheKitchenMileApp: App {
     @StateObject private var appState = AppState()
     @StateObject private var historyService = HistoryService()
 
+    init() {
+        FontLoader.registerFonts()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -39,6 +43,6 @@ struct ContentView: View {
             minWidth: Theme.windowMinWidth,
             minHeight: Theme.windowMinHeight
         )
-        .background(appState.themeColors.background)
+        .background(Theme.bg)
     }
 }

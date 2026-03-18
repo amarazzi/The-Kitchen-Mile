@@ -5,21 +5,15 @@ struct MealPlanView: View {
     @ObservedObject var historyService: HistoryService
     @State private var showSettings = false
 
-    var colors: ThemeColors { appState.themeColors }
     var trainingType: TrainingType { appState.selectedTrainingType ?? .easy }
 
     var body: some View {
         ZStack {
-            colors.background.ignoresSafeArea()
+            Theme.bg.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Header
                 headerBar
 
-                Divider()
-                    .background(colors.border)
-
-                // Scrollable content
                 ScrollView(.vertical, showsIndicators: true) {
                     VStack(spacing: Theme.spacing24) {
                         ForEach(MealSlot.allCases, id: \.self) { slot in
@@ -29,10 +23,6 @@ struct MealPlanView: View {
                     .padding(Theme.spacing24)
                 }
 
-                Divider()
-                    .background(colors.border)
-
-                // Macro bar
                 MacroBarView()
                     .environmentObject(appState)
             }
@@ -49,59 +39,75 @@ struct MealPlanView: View {
         HStack(spacing: Theme.spacing16) {
             // Back button
             Button(action: { appState.selectedTrainingType = nil }) {
-                HStack(spacing: Theme.spacing8) {
-                    Image(systemName: "chevron.left")
-                        .font(.bodyMedium)
-                        .foregroundColor(colors.secondaryText)
-
-                    HStack(spacing: Theme.spacing8) {
-                        Text(trainingType.displayName(lang: appState.language))
-                            .font(.headingSmall)
-                            .foregroundColor(colors.primaryText)
-
-                        Circle()
-                            .fill(trainingType.color)
-                            .frame(width: 8, height: 8)
-                    }
-                }
+                Text(L10n.backLabel(appState.language).uppercased())
+                    .font(.bodySmallMedium)
+                    .foregroundColor(Theme.text3)
+                    .tracking(0.06 * 12)
             }
             .buttonStyle(.plain)
 
+            // Training type title + badge
+            HStack(spacing: Theme.spacing8) {
+                Text(trainingType.displayName(lang: appState.language).uppercased())
+                    .font(.headingLarge)
+                    .foregroundColor(Theme.text)
+                    .tracking(0.02 * 20)
+
+                // Active badge
+                Text(L10n.activeLabel(appState.language).uppercased())
+                    .font(.eyebrowSmall)
+                    .foregroundColor(Theme.accent)
+                    .tracking(0.10 * 10)
+                    .padding(.horizontal, Theme.spacing8)
+                    .padding(.vertical, 3)
+                    .background(Theme.accentDim)
+                    .cornerRadius(Theme.cornerRadiusBadge)
+            }
+
             Spacer()
 
-            Text(formattedDate())
-                .font(.bodyRegular)
-                .foregroundColor(colors.secondaryText)
-
-            Spacer()
+            // Date
+            Text(formattedDate().uppercased())
+                .font(.bodySmallMedium)
+                .foregroundColor(Theme.text3)
+                .tracking(0.06 * 12)
 
             // Settings button
             Button(action: { showSettings = true }) {
                 Image(systemName: "gearshape")
-                    .font(.bodyMedium)
-                    .foregroundColor(colors.secondaryText)
+                    .font(.system(size: 14))
+                    .foregroundColor(Theme.text3)
             }
             .buttonStyle(.plain)
         }
         .padding(.horizontal, Theme.spacing24)
         .padding(.vertical, Theme.spacing16)
+        .background(Theme.bg)
+        .overlay(
+            Rectangle()
+                .fill(Theme.border)
+                .frame(height: 1),
+            alignment: .bottom
+        )
     }
 
     // MARK: - Meal Section
 
     private func mealSection(for slot: MealSlot) -> some View {
-        VStack(alignment: .leading, spacing: Theme.spacing16) {
+        VStack(alignment: .leading, spacing: Theme.spacing12) {
             HStack {
-                Text(L10n.slotName(slot, lang: appState.language))
+                Text(L10n.slotName(slot, lang: appState.language).uppercased())
                     .font(.headingMedium)
-                    .foregroundColor(colors.primaryText)
+                    .foregroundColor(Theme.text)
+                    .tracking(0.03 * 18)
 
                 Spacer()
 
                 Button(action: { regenerateSlot(slot) }) {
-                    Image(systemName: "arrow.clockwise")
-                        .font(.bodyMedium)
-                        .foregroundColor(colors.secondaryText)
+                    Text(L10n.shuffleLabel(appState.language).uppercased())
+                        .font(.ingredientMedium)
+                        .foregroundColor(Theme.text3)
+                        .tracking(0.06 * 11)
                 }
                 .buttonStyle(.plain)
             }
@@ -112,16 +118,14 @@ struct MealPlanView: View {
                         meal: pair.quick,
                         mode: .quick,
                         weight: appState.userWeight,
-                        lang: appState.language,
-                        colors: colors
+                        lang: appState.language
                     )
 
                     MealCardView(
                         meal: pair.cooked,
                         mode: .cooked,
                         weight: appState.userWeight,
-                        lang: appState.language,
-                        colors: colors
+                        lang: appState.language
                     )
                 }
                 .fixedSize(horizontal: false, vertical: true)
