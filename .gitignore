@@ -1,0 +1,18 @@
+## macOS
+.DS_Store
+
+## Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xcworkspace
+xcuserdata/
+*.xccheckout
+
+## Swift Package Manager
+.build/
+Packages/
+
+## Python generators (not part of the app)
+__pycache__/
+*.pyc
