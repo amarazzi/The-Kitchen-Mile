@@ -59,20 +59,69 @@ enum Theme {
     static let windowMinWidth: CGFloat = 720
     static let windowMinHeight: CGFloat = 560
 
-    // MARK: - Colors
-    static let bg = Color(hex: 0x0A0A0A)
-    static let surface = Color(hex: 0x141414)
-    static let surface2 = Color(hex: 0x1E1E1E)
-    static let surface3 = Color(hex: 0x252525)
-    static let border = Color(hex: 0x2A2A2A)
-    static let text = Color.white
-    static let text2 = Color(hex: 0x888888)
-    static let text3 = Color(hex: 0x444444)
+    // MARK: - Dark Colors (default)
+    static let bgDark = Color(hex: 0x0A0A0A)
+    static let surfaceDark = Color(hex: 0x141414)
+    static let surface2Dark = Color(hex: 0x1E1E1E)
+    static let surface3Dark = Color(hex: 0x252525)
+    static let borderDark = Color(hex: 0x2A2A2A)
+    static let textDark = Color.white
+    static let text2Dark = Color(hex: 0x888888)
+    static let text3Dark = Color(hex: 0x444444)
+
+    // MARK: - Light Colors
+    static let bgLight = Color(hex: 0xFFFFFF)
+    static let surfaceLight = Color(hex: 0xF5F5F5)
+    static let surface2Light = Color(hex: 0xEEEEEE)
+    static let surface3Light = Color(hex: 0xE0E0E0)
+    static let borderLight = Color(hex: 0xE5E5E5)
+    static let textLight = Color(hex: 0x1A1A1A)
+    static let text2Light = Color(hex: 0x888888)
+    static let text3Light = Color(hex: 0xAAAAAA)
+
+    // MARK: - Accent (same in both themes)
     static let accent = Color(hex: 0xC8F135)
     static let accentDim = Color(red: 200.0/255.0, green: 241.0/255.0, blue: 53.0/255.0).opacity(0.12)
     static let accentBorder = Color(red: 200.0/255.0, green: 241.0/255.0, blue: 53.0/255.0).opacity(0.3)
     static let overTargetColor = Color(hex: 0xF59E0B)
     static let errorColor = Color(hex: 0xEF4444)
+
+    // MARK: - Adaptive Colors (resolved at call site)
+    static var bg: Color { bgDark }
+    static var surface: Color { surfaceDark }
+    static var surface2: Color { surface2Dark }
+    static var surface3: Color { surface3Dark }
+    static var border: Color { borderDark }
+    static var text: Color { textDark }
+    static var text2: Color { text2Dark }
+    static var text3: Color { text3Dark }
+
+    // MARK: - Light mode color set
+    static func colors(for mode: AppearanceMode) -> ThemeColorSet {
+        switch mode {
+        case .dark:
+            return ThemeColorSet(
+                bg: bgDark, surface: surfaceDark, surface2: surface2Dark, surface3: surface3Dark,
+                border: borderDark, text: textDark, text2: text2Dark, text3: text3Dark
+            )
+        case .light:
+            return ThemeColorSet(
+                bg: bgLight, surface: surfaceLight, surface2: surface2Light, surface3: surface3Light,
+                border: borderLight, text: textLight, text2: text2Light, text3: text3Light
+            )
+        }
+    }
+}
+
+struct ThemeColorSet {
+    let bg: Color
+    let surface: Color
+    let surface2: Color
+    let surface3: Color
+    let border: Color
+    let text: Color
+    let text2: Color
+    let text3: Color
 }
 
 // MARK: - Appearance Mode

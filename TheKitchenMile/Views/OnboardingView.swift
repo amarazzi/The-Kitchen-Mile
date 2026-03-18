@@ -7,9 +7,11 @@ struct OnboardingView: View {
     @State private var selectedLanguage: AppLanguage = .en
     @State private var showError: Bool = false
 
+    private var c: ThemeColorSet { appState.colors }
+
     var body: some View {
         ZStack {
-            Theme.bg.ignoresSafeArea()
+            c.bg.ignoresSafeArea()
 
             VStack(spacing: Theme.spacing32) {
                 Spacer()
@@ -24,7 +26,7 @@ struct OnboardingView: View {
                     // Main heading
                     Text(L10n.onboardingTitle(selectedLanguage).uppercased())
                         .font(.displayLarge)
-                        .foregroundColor(Theme.text)
+                        .foregroundColor(c.text)
                         .multilineTextAlignment(.center)
                         .tracking(0.02 * 44)
                 }
@@ -34,7 +36,7 @@ struct OnboardingView: View {
                     VStack(alignment: .leading, spacing: Theme.spacing8) {
                         Text(L10n.weightLabel(selectedLanguage).uppercased())
                             .font(.eyebrowMicro)
-                            .foregroundColor(Theme.text3)
+                            .foregroundColor(c.text3)
                             .tracking(0.12 * 9)
 
                         HStack(alignment: .firstTextBaseline, spacing: Theme.spacing8) {
@@ -49,14 +51,14 @@ struct OnboardingView: View {
 
                             Text(L10n.weightUnit(selectedLanguage))
                                 .font(.bodyMedium)
-                                .foregroundColor(Theme.text2)
+                                .foregroundColor(c.text2)
                         }
                         .padding(.horizontal, Theme.spacing24)
                         .padding(.vertical, Theme.spacing16)
-                        .background(Theme.surface)
+                        .background(c.surface)
                         .overlay(
                             RoundedRectangle(cornerRadius: Theme.cornerRadius)
-                                .stroke(showError ? Theme.errorColor : Theme.border, lineWidth: 1)
+                                .stroke(showError ? Theme.errorColor : c.border, lineWidth: 1)
                         )
                         .cornerRadius(Theme.cornerRadius)
 
@@ -71,13 +73,14 @@ struct OnboardingView: View {
                     VStack(alignment: .leading, spacing: Theme.spacing8) {
                         Text(L10n.languageLabel(selectedLanguage).uppercased())
                             .font(.eyebrowMicro)
-                            .foregroundColor(Theme.text3)
+                            .foregroundColor(c.text3)
                             .tracking(0.12 * 9)
 
                         SegmentedControl(
                             options: AppLanguage.allCases,
                             selection: $selectedLanguage,
-                            label: { $0.displayName }
+                            label: { $0.displayName },
+                            colors: c
                         )
                     }
                 }
@@ -87,7 +90,7 @@ struct OnboardingView: View {
                 Button(action: completeOnboarding) {
                     Text(L10n.continueButton(selectedLanguage).uppercased())
                         .font(.button)
-                        .foregroundColor(Theme.bg)
+                        .foregroundColor(c.bg)
                         .tracking(0.04 * 15)
                         .frame(maxWidth: 360)
                         .padding(.vertical, 15)
@@ -125,6 +128,7 @@ struct SegmentedControl<T: Hashable>: View {
     let options: [T]
     @Binding var selection: T
     let label: (T) -> String
+    var colors: ThemeColorSet = Theme.colors(for: .dark)
 
     var body: some View {
         HStack(spacing: 0) {
@@ -133,7 +137,7 @@ struct SegmentedControl<T: Hashable>: View {
                     Text(label(option).uppercased())
                         .font(.bodySmallMedium)
                         .tracking(0.04 * 12)
-                        .foregroundColor(selection == option ? Theme.bg : Theme.text2)
+                        .foregroundColor(selection == option ? colors.bg : colors.text2)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, Theme.spacing8)
                         .background(
@@ -145,10 +149,10 @@ struct SegmentedControl<T: Hashable>: View {
             }
         }
         .padding(Theme.segmentedPadding)
-        .background(Theme.surface2)
+        .background(colors.surface2)
         .overlay(
             RoundedRectangle(cornerRadius: Theme.cornerRadius)
-                .stroke(Theme.border, lineWidth: 1)
+                .stroke(colors.border, lineWidth: 1)
         )
         .cornerRadius(Theme.cornerRadius)
     }

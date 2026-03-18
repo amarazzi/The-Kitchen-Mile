@@ -6,10 +6,11 @@ struct MealPlanView: View {
     @State private var showSettings = false
 
     var trainingType: TrainingType { appState.selectedTrainingType ?? .easy }
+    private var c: ThemeColorSet { appState.colors }
 
     var body: some View {
         ZStack {
-            Theme.bg.ignoresSafeArea()
+            c.bg.ignoresSafeArea()
 
             VStack(spacing: 0) {
                 headerBar
@@ -41,7 +42,7 @@ struct MealPlanView: View {
             Button(action: { appState.selectedTrainingType = nil }) {
                 Text(L10n.backLabel(appState.language).uppercased())
                     .font(.bodySmallMedium)
-                    .foregroundColor(Theme.text3)
+                    .foregroundColor(c.text3)
                     .tracking(0.06 * 12)
             }
             .buttonStyle(.plain)
@@ -50,7 +51,7 @@ struct MealPlanView: View {
             HStack(spacing: Theme.spacing8) {
                 Text(trainingType.displayName(lang: appState.language).uppercased())
                     .font(.headingLarge)
-                    .foregroundColor(Theme.text)
+                    .foregroundColor(c.text)
                     .tracking(0.02 * 20)
 
                 // Active badge
@@ -69,23 +70,23 @@ struct MealPlanView: View {
             // Date
             Text(formattedDate().uppercased())
                 .font(.bodySmallMedium)
-                .foregroundColor(Theme.text3)
+                .foregroundColor(c.text3)
                 .tracking(0.06 * 12)
 
             // Settings button
             Button(action: { showSettings = true }) {
                 Image(systemName: "gearshape")
                     .font(.system(size: 14))
-                    .foregroundColor(Theme.text3)
+                    .foregroundColor(c.text3)
             }
             .buttonStyle(.plain)
         }
         .padding(.horizontal, Theme.spacing24)
         .padding(.vertical, Theme.spacing16)
-        .background(Theme.bg)
+        .background(c.bg)
         .overlay(
             Rectangle()
-                .fill(Theme.border)
+                .fill(c.border)
                 .frame(height: 1),
             alignment: .bottom
         )
@@ -98,7 +99,7 @@ struct MealPlanView: View {
             HStack {
                 Text(L10n.slotName(slot, lang: appState.language).uppercased())
                     .font(.headingMedium)
-                    .foregroundColor(Theme.text)
+                    .foregroundColor(c.text)
                     .tracking(0.03 * 18)
 
                 Spacer()
@@ -106,7 +107,7 @@ struct MealPlanView: View {
                 Button(action: { regenerateSlot(slot) }) {
                     Text(L10n.shuffleLabel(appState.language).uppercased())
                         .font(.ingredientMedium)
-                        .foregroundColor(Theme.text3)
+                        .foregroundColor(c.text3)
                         .tracking(0.06 * 11)
                 }
                 .buttonStyle(.plain)
@@ -118,14 +119,16 @@ struct MealPlanView: View {
                         meal: pair.quick,
                         mode: .quick,
                         weight: appState.userWeight,
-                        lang: appState.language
+                        lang: appState.language,
+                        colors: c
                     )
 
                     MealCardView(
                         meal: pair.cooked,
                         mode: .cooked,
                         weight: appState.userWeight,
-                        lang: appState.language
+                        lang: appState.language,
+                        colors: c
                     )
                 }
                 .fixedSize(horizontal: false, vertical: true)

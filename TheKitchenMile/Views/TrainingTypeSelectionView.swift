@@ -4,9 +4,11 @@ struct TrainingTypeSelectionView: View {
     @EnvironmentObject var appState: AppState
     @ObservedObject var historyService: HistoryService
 
+    private var c: ThemeColorSet { appState.colors }
+
     var body: some View {
         ZStack {
-            Theme.bg.ignoresSafeArea()
+            c.bg.ignoresSafeArea()
 
             VStack(spacing: Theme.spacing32) {
                 Spacer()
@@ -15,13 +17,13 @@ struct TrainingTypeSelectionView: View {
                     // Date eyebrow
                     Text(formattedDate().uppercased())
                         .font(.eyebrow)
-                        .foregroundColor(Theme.text3)
+                        .foregroundColor(c.text3)
                         .tracking(0.06 * 11)
 
                     // Main question
                     Text(L10n.trainingQuestion(appState.language).uppercased())
                         .font(.displayMedium)
-                        .foregroundColor(Theme.text)
+                        .foregroundColor(c.text)
                         .multilineTextAlignment(.center)
                         .lineSpacing(-36 * 0.05)
                         .tracking(0.02 * 36)
@@ -33,13 +35,15 @@ struct TrainingTypeSelectionView: View {
                         TrainingTypeCard(
                             type: .easy,
                             lang: appState.language,
-                            isFeatured: appState.lastUsedTrainingType == .easy
+                            isFeatured: appState.lastUsedTrainingType == .easy,
+                            colors: c
                         ) { selectTrainingType(.easy) }
 
                         TrainingTypeCard(
                             type: .quality,
                             lang: appState.language,
-                            isFeatured: appState.lastUsedTrainingType == .quality
+                            isFeatured: appState.lastUsedTrainingType == .quality,
+                            colors: c
                         ) { selectTrainingType(.quality) }
                     }
 
@@ -47,13 +51,15 @@ struct TrainingTypeSelectionView: View {
                         TrainingTypeCard(
                             type: .longRun,
                             lang: appState.language,
-                            isFeatured: appState.lastUsedTrainingType == .longRun
+                            isFeatured: appState.lastUsedTrainingType == .longRun,
+                            colors: c
                         ) { selectTrainingType(.longRun) }
 
                         TrainingTypeCard(
                             type: .rest,
                             lang: appState.language,
-                            isFeatured: appState.lastUsedTrainingType == .rest
+                            isFeatured: appState.lastUsedTrainingType == .rest,
+                            colors: c
                         ) { selectTrainingType(.rest) }
                     }
                 }
@@ -96,6 +102,7 @@ struct TrainingTypeCard: View {
     let type: TrainingType
     let lang: AppLanguage
     let isFeatured: Bool
+    var colors: ThemeColorSet = Theme.colors(for: .dark)
     let action: () -> Void
 
     @State private var isHovered = false
@@ -113,20 +120,21 @@ struct TrainingTypeCard: View {
                     } else {
                         Text(type.eyebrowLabel(lang: lang).uppercased())
                             .font(.eyebrowSmall)
-                            .foregroundColor(Theme.text3)
+                            .foregroundColor(colors.text3)
                             .tracking(0.12 * 10)
                     }
 
                     // Name
-                    Text(type.displayName(lang: lang).uppercased())
+                    Text(type.shortName(lang: lang).uppercased())
                         .font(.displaySmall)
-                        .foregroundColor(Theme.text)
+                        .foregroundColor(colors.text)
                         .tracking(0.02 * 22)
+                        .lineLimit(1)
 
                     // Subtitle
                     Text(type.subtitle(lang: lang))
                         .font(.bodySmall)
-                        .foregroundColor(Theme.text2)
+                        .foregroundColor(colors.text2)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -138,11 +146,11 @@ struct TrainingTypeCard: View {
                 }
             }
             .padding(Theme.cardPadding)
-            .background(isFeatured ? Theme.accentDim : Theme.surface)
+            .background(isFeatured ? Theme.accentDim : colors.surface)
             .overlay(
                 RoundedRectangle(cornerRadius: Theme.cornerRadius)
                     .stroke(
-                        isFeatured ? Theme.accentBorder : (isHovered ? Theme.text3 : Theme.border),
+                        isFeatured ? Theme.accentBorder : (isHovered ? colors.text3 : colors.border),
                         lineWidth: 1
                     )
             )

@@ -3,6 +3,8 @@ import SwiftUI
 struct MacroBarView: View {
     @EnvironmentObject var appState: AppState
 
+    private var c: ThemeColorSet { appState.colors }
+
     var body: some View {
         let actual = appState.actualMacros()
         let targets = appState.dailyTargets()
@@ -33,20 +35,20 @@ struct MacroBarView: View {
                 VStack(alignment: .trailing, spacing: 2) {
                     Text(formatNumber(actual.kcal))
                         .font(.numberMedium)
-                        .foregroundColor(Theme.text)
+                        .foregroundColor(c.text)
 
                     Text(L10n.totalKcalLabel(appState.language).uppercased())
                         .font(.ingredientText)
-                        .foregroundColor(Theme.text3)
+                        .foregroundColor(c.text3)
                 }
             }
         }
         .padding(.horizontal, Theme.spacing24)
         .padding(.vertical, Theme.spacing16)
-        .background(Theme.surface)
+        .background(c.surface)
         .overlay(
             Rectangle()
-                .fill(Theme.border)
+                .fill(c.border)
                 .frame(height: 1),
             alignment: .top
         )
@@ -57,18 +59,18 @@ struct MacroBarView: View {
             // Label
             Text(label.uppercased())
                 .font(.eyebrowMicro)
-                .foregroundColor(Theme.text3)
+                .foregroundColor(c.text3)
                 .tracking(0.12 * 9)
 
             // Value + target
             HStack(alignment: .firstTextBaseline, spacing: Theme.spacing4) {
                 Text("\(actual)g")
                     .font(.headingSmall)
-                    .foregroundColor(Theme.text)
+                    .foregroundColor(c.text)
 
                 Text("/ \(target)g")
                     .font(.ingredientText)
-                    .foregroundColor(Theme.text3)
+                    .foregroundColor(c.text3)
             }
 
             // Progress bar
@@ -76,7 +78,7 @@ struct MacroBarView: View {
                 ZStack(alignment: .leading) {
                     // Track
                     RoundedRectangle(cornerRadius: 1.5)
-                        .fill(Theme.surface3)
+                        .fill(c.surface3)
                         .frame(height: Theme.progressBarHeight)
 
                     // Fill

@@ -43,6 +43,6 @@ struct ContentView: View {
             minWidth: Theme.windowMinWidth,
             minHeight: Theme.windowMinHeight
         )
-        .background(Theme.bg)
+        .background(appState.colors.bg)
     }
 }

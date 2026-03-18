@@ -7,9 +7,11 @@ struct SettingsView: View {
     @State private var weightText: String = ""
     @State private var showError: Bool = false
 
+    private var c: ThemeColorSet { appState.colors }
+
     var body: some View {
         ZStack {
-            Theme.bg.ignoresSafeArea()
+            c.bg.ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: Theme.spacing24) {
                 // Header
@@ -22,7 +24,7 @@ struct SettingsView: View {
 
                         Text(L10n.settingsTitle(appState.language).uppercased())
                             .font(.displayMedium)
-                            .foregroundColor(Theme.text)
+                            .foregroundColor(c.text)
                             .tracking(0.02 * 36)
                     }
 
@@ -31,21 +33,21 @@ struct SettingsView: View {
                     Button(action: { dismiss() }) {
                         Image(systemName: "xmark")
                             .font(.system(size: 14))
-                            .foregroundColor(Theme.text3)
+                            .foregroundColor(c.text3)
                     }
                     .buttonStyle(.plain)
                 }
 
                 // Divider
                 Rectangle()
-                    .fill(Theme.border)
+                    .fill(c.border)
                     .frame(height: 1)
 
                 // Weight group
                 VStack(alignment: .leading, spacing: Theme.spacing8) {
                     Text(L10n.weightLabel(appState.language).uppercased())
                         .font(.eyebrowMicro)
-                        .foregroundColor(Theme.text3)
+                        .foregroundColor(c.text3)
                         .tracking(0.12 * 9)
 
                     HStack(alignment: .firstTextBaseline, spacing: Theme.spacing8) {
@@ -63,14 +65,14 @@ struct SettingsView: View {
 
                         Text(L10n.weightUnit(appState.language))
                             .font(.bodyMedium)
-                            .foregroundColor(Theme.text2)
+                            .foregroundColor(c.text2)
                     }
                     .padding(.horizontal, Theme.spacing24)
                     .padding(.vertical, Theme.spacing16)
-                    .background(Theme.surface)
+                    .background(c.surface)
                     .overlay(
                         RoundedRectangle(cornerRadius: Theme.cornerRadius)
-                            .stroke(showError ? Theme.errorColor : Theme.border, lineWidth: 1)
+                            .stroke(showError ? Theme.errorColor : c.border, lineWidth: 1)
                     )
                     .cornerRadius(Theme.cornerRadius)
 
@@ -83,34 +85,35 @@ struct SettingsView: View {
 
                 // Divider
                 Rectangle()
-                    .fill(Theme.border)
+                    .fill(c.border)
                     .frame(height: 1)
 
                 // Language group
                 VStack(alignment: .leading, spacing: Theme.spacing8) {
                     Text(L10n.languageLabel(appState.language).uppercased())
                         .font(.eyebrowMicro)
-                        .foregroundColor(Theme.text3)
+                        .foregroundColor(c.text3)
                         .tracking(0.12 * 9)
 
                     SegmentedControl(
                         options: AppLanguage.allCases,
                         selection: $appState.language,
-                        label: { $0.displayName }
+                        label: { $0.displayName },
+                        colors: c
                     )
                     .frame(maxWidth: 280)
                 }
 
                 // Divider
                 Rectangle()
-                    .fill(Theme.border)
+                    .fill(c.border)
                     .frame(height: 1)
 
                 // Appearance group
                 VStack(alignment: .leading, spacing: Theme.spacing8) {
                     Text(L10n.appearanceLabel(appState.language).uppercased())
                         .font(.eyebrowMicro)
-                        .foregroundColor(Theme.text3)
+                        .foregroundColor(c.text3)
                         .tracking(0.12 * 9)
 
                     SegmentedControl(
@@ -120,7 +123,8 @@ struct SettingsView: View {
                             $0 == .dark
                                 ? L10n.darkLabel(appState.language)
                                 : L10n.lightLabel(appState.language)
-                        }
+                        },
+                        colors: c
                     )
                     .frame(maxWidth: 280)
                 }
@@ -145,7 +149,7 @@ struct SettingsView: View {
         if let value = Double(trimmed), value >= 50, value <= 120 {
             showError = false
             appState.userWeight = value
-        } else if let _ = Double(trimmed) {
+        } else {
             showError = true
         }
     }

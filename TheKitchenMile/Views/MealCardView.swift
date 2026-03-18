@@ -5,19 +5,20 @@ struct MealCardView: View {
     let mode: MealMode
     let weight: Double
     let lang: AppLanguage
+    var colors: ThemeColorSet = Theme.colors(for: .dark)
 
     var body: some View {
         VStack(alignment: .leading, spacing: Theme.spacing8) {
             // Eyebrow badge
             Text((mode == .quick ? L10n.quick(lang) : L10n.cooked(lang)).uppercased())
                 .font(.eyebrowMicro)
-                .foregroundColor(Theme.text3)
+                .foregroundColor(colors.text3)
                 .tracking(0.14 * 9)
 
             // Meal name
             Text(meal.name.uppercased())
                 .font(.headingLarge)
-                .foregroundColor(Theme.text)
+                .foregroundColor(colors.text)
                 .tracking(0.02 * 20)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -26,10 +27,10 @@ struct MealCardView: View {
                 ForEach(meal.scaledIngredients(for: weight)) { ingredient in
                     HStack(spacing: Theme.spacing4) {
                         Text("·")
-                            .foregroundColor(Theme.text3)
+                            .foregroundColor(colors.text3)
                         Text("\(ingredient.displayAmount()) \(ingredient.item)")
                             .font(.ingredientText)
-                            .foregroundColor(Theme.text2)
+                            .foregroundColor(colors.text2)
                     }
                 }
             }
@@ -44,16 +45,16 @@ struct MealCardView: View {
                     .tracking(-0.3)
                 Text("kcal")
                     .font(.ingredientText)
-                    .foregroundColor(Theme.text3)
+                    .foregroundColor(colors.text3)
             }
             .padding(.top, Theme.spacing4)
         }
         .padding(Theme.cardPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Theme.surface)
+        .background(colors.surface)
         .overlay(
             RoundedRectangle(cornerRadius: Theme.cornerRadius)
-                .stroke(Theme.border, lineWidth: Theme.cardBorderWidth)
+                .stroke(colors.border, lineWidth: Theme.cardBorderWidth)
         )
         .cornerRadius(Theme.cornerRadius)
     }

@@ -84,6 +84,10 @@ final class AppState: ObservableObject {
         }
     }
 
+    var colors: ThemeColorSet {
+        Theme.colors(for: appearance)
+    }
+
     func dailyTargets() -> MacroTargets? {
         selectedTrainingType?.dailyTargets(for: userWeight)
     }
